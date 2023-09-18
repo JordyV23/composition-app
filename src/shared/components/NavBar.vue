@@ -1,33 +1,38 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 //Cuando se importa una interfaz es mejor utilizar el type
-import type { RouterLink as RouterLinkInterface } from '@/router/list-routes';
+import type { RouterLink as RouterLinkInterface } from '@/router/list-routes'
 
 interface Props {
-  title?: string,
-  links: RouterLinkInterface[]
+  title?: string
+  links?: RouterLinkInterface[]
+  isSecondary?: boolean
 }
 
 withDefaults(defineProps<Props>(), {
   title: 'CompoApp',
+  isSecondary: false
 })
 </script>
 
 <template>
   <nav>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="25" height="25" />
-    <!-- ? Manera 1 -->
-    <!-- <span v-if="$props.title" >{{ $props.title }}</span>
-    <span v-else > App </span> -->
+    <template v-if="!$props.isSecondary" >
+      <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="25" height="25" />
+      <!-- ? Manera 1 -->
+      <!-- <span v-if="$props.title" >{{ $props.title }}</span>
+        <span v-else > App </span> -->
 
-    <!-- ? Manera 2 -->
-    <!-- <span>{{ $props.title || 'CompoApp' }}</span> -->
+      <!-- ? Manera 2 -->
+      <!-- <span>{{ $props.title || 'CompoApp' }}</span> -->
 
-    <!-- ? Manera 3 -->
-    <span>{{ $props.title }}</span>
+      <!-- ? Manera 3 -->
+      <span>{{ $props.title }}</span>
+    </template>
 
-    <RouterLink v-for=" link of $props.links" :to="link.path" :key="link.name" > {{ link.title }} </RouterLink>
-
+    <RouterLink v-for="link of $props.links" :to="link.path" :key="link.name">
+      {{ link.title }}
+    </RouterLink>
   </nav>
 </template>
 
@@ -54,7 +59,7 @@ a {
   margin-right: 5px;
 }
 
-nav a.router-link-exact-active {
+nav a.router-link-active {
   color: var(--color-text);
 }
 
