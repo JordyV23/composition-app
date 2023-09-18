@@ -1,40 +1,57 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
+//Cuando se importa una interfaz es mejor utilizar el type
+import type { RouterLink as RouterLinkInterface } from '@/router/list-routes';
+
+interface Props {
+  title?: string,
+  links: RouterLinkInterface[]
+}
+
+withDefaults(defineProps<Props>(), {
+  title: 'CompoApp',
+})
 </script>
 
 <template>
   <nav>
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="25" height="25" />
-    <span>CompositionApp</span>
+    <!-- ? Manera 1 -->
+    <!-- <span v-if="$props.title" >{{ $props.title }}</span>
+    <span v-else > App </span> -->
 
-    <RouterLink to="/">Home</RouterLink>
-    <RouterLink to="/about">About</RouterLink>
-    <RouterLink to="/counter">Counter</RouterLink>
+    <!-- ? Manera 2 -->
+    <!-- <span>{{ $props.title || 'CompoApp' }}</span> -->
+
+    <!-- ? Manera 3 -->
+    <span>{{ $props.title }}</span>
+
+    <RouterLink v-for=" link of $props.links" :to="link.path" :key="link.name" > {{ link.title }} </RouterLink>
+
   </nav>
 </template>
 
 <style scoped>
-
 nav {
-    align-items: flex-start;
-    display: flex;
-    font-size: 12px;
-    margin-top: 10px;
-    text-align: center;
-    width: 100%;
+  align-items: flex-start;
+  display: flex;
+  font-size: 12px;
+  margin-top: 10px;
+  text-align: center;
+  width: 100%;
 }
 
-img{
-    margin-left: 5px;
-    margin-right: 5px;
+img {
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
-span{
-    margin-right: 10px;
+span {
+  margin-right: 10px;
 }
 
-a{
-    margin-right: 5px;
+a {
+  margin-right: 5px;
 }
 
 nav a.router-link-exact-active {
@@ -54,7 +71,4 @@ nav a {
 nav a:first-of-type {
   border: 0;
 }
-
-
-
 </style>
