@@ -2,9 +2,13 @@ import './assets/main.css'
 
 import { createApp } from 'vue'
 import { VueQueryPlugin } from '@tanstack/vue-query'
+
 import App from './App.vue'
 import router from './router'
+import store from './store/store'
 
+// Inicializamos la carga de los pokemons
+store.startLoadingPokemons();
 
 const app = createApp(App)
 
