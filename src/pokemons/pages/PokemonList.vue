@@ -1,10 +1,15 @@
 <script setup lang="ts">
-import { usePokemons } from '../composables/usePokemons'
+import { useQuery } from '@tanstack/vue-query'
+import { getPokemons } from '../helpers/get-pokemons'
 
-const { count, pokemons, isLoading } = usePokemons()
+// import { usePokemons } from '../composables/usePokemons'
+import { computed } from 'vue'
 
+// const { count, pokemons, isLoading } = usePokemons()
 
+const { isLoading, data: pokemons } = useQuery(['pokemons'], getPokemons)
 
+const count = computed(() => pokemons.value?.length ?? 0);
 </script>
 <template>
   <div>
