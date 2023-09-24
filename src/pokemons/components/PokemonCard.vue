@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router'
+import { useQueryClient } from '@tanstack/vue-query'
 import type { Pokemon } from '../interfaces'
+import { getPokemonById } from '../helpers/get-pokemon-by-id'
 
 interface Props {
   pokemon: Pokemon
@@ -8,8 +10,9 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const router = useRouter();
+const router = useRouter()
 
+const queryClient = useQueryClient()
 
 const goTo = () => {
   router.push({
@@ -20,38 +23,42 @@ const goTo = () => {
   })
 }
 
-
+const prefetchPokemon = () => {
+  const id = props.pokemon.id.toString()
+  queryClient.prefetchQuery({
+    queryKey: ['pokemon', id],
+    queryFn: () => getPokemonById(id)
+  })
+}
 </script>
 
 <template>
-  <div class="pokemon-card" @click="goTo" >
+  <div class="pokemon-card" @click="goTo" @mouseenter="prefetchPokemon">
     <img :src="pokemon.frontSprite" :alt="'pokemon photo of' + pokemon.name" />
     <h3>{{ pokemon.name }}</h3>
   </div>
 </template>
 
 <style scoped>
-
 .pokemon-card {
-    margin-right: 5px;
-    margin-left: 5px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 10px;
-    cursor: pointer;
+  margin-right: 5px;
+  margin-left: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+  cursor: pointer;
 }
 
-img{
-    width: 150px;
-    border-radius: 5px 5px 0 0;
-    box-shadow: 0px 2px 10px rgba(255, 255, 255, 0.1);
-    transition: all 0.5s;
+img {
+  width: 150px;
+  border-radius: 5px 5px 0 0;
+  box-shadow: 0px 2px 10px rgba(255, 255, 255, 0.1);
+  transition: all 0.5s;
 }
 
-img:hover{
-    box-shadow: 0px 2px 10px rgba(255, 255, 255, 0.5);
-    transition: all 0.5s;
+img:hover {
+  box-shadow: 0px 2px 10px rgba(255, 255, 255, 0.5);
+  transition: all 0.5s;
 }
-
 </style>
