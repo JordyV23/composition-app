@@ -7,6 +7,8 @@ export const getPokemons = async (): Promise<Pokemon[]> => {
 
   // await sleep(2);
 
+  // throw new Error('Error al cargar los pokemons');
+
   const { data } = await pokemonApi.get<PokemonsListResponse>('/pokemon?limit=45')
 
   const pokemonPromises: Promise<Pokemon>[] = []

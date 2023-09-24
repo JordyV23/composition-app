@@ -1,6 +1,14 @@
 <script setup lang="ts">
-import store from '@/store/store';
-import PokemonCardList from '../components/PokemonCardList.vue';
+import store from '@/store/store'
+import PokemonCardList from '../components/PokemonCardList.vue'
+import { useQuery } from '@tanstack/vue-query'
+import { getPokemons } from '../helpers/get-pokemons'
+
+useQuery(['pokemons'], getPokemons, {
+  select(data) {
+    store.loadedPokemons(data)
+  }
+})
 
 </script>
 <template>
@@ -14,6 +22,5 @@ import PokemonCardList from '../components/PokemonCardList.vue';
     <h1>Pokemon List Native - {{ store.pokemons.count }}</h1>
 
     <PokemonCardList :pokemons="store.pokemons.list ?? []" />
-
   </div>
 </template>
